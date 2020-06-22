@@ -1,18 +1,21 @@
-#!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'base64'
+require 'dotenv/load'
+require 'json'
+require 'rest-client'
 
-# https://rubygems.org/gems/rest-client # Example install using gem #   gem install rest-client require 'rest-client'
+host = ENV['HOST']
+user = ENV['USERNAME']
+pwd = ENV['PASSWORD']
 
-# Set the request parameters
-host =  'https://myinstance.service-now.com'
-user =  'admin'
-pwd =  'admin'
+begin
+  response = RestClient.get "#{host}/api/now/table/incident", params: { active: 'true' }, :authorization => "Basic #{Base64.strict_encode64("#{user}:#{pwd}")}"
+  data = JSON.parse(response.body)
 
-begin # Get ALL incidents
- response = RestClient. get ( "#{host}/api/now/table/incident",
-                            {:authorization  => "Basic #{Base64.strict_encode64(" #{user}:#{pwd}")}", :accept => 'application/json' } ) puts "#{response.to_str}" puts "Response status: #{response.code}"
- response. headers. each { |k,v | puts "Header: #{k}=#{v}" }
+  data['result'].map do |item|
+    puts item['number']
+  end
 
 rescue => e
   puts "ERROR: #{e}" end
