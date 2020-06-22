@@ -10,7 +10,10 @@ user = ENV['USERNAME']
 pwd = ENV['PASSWORD']
 
 begin
-  response = RestClient.get "#{host}/api/now/table/incident", params: { active: 'true' }, :authorization => "Basic #{Base64.strict_encode64("#{user}:#{pwd}")}"
+  auth = "Basic #{Base64.strict_encode64("#{user}:#{pwd}")}"
+  filter = { active: 'true' }
+  table = "#{host}/api/now/table/incident"
+  response = RestClient.get table, params: filter, authorization: auth
   data = JSON.parse(response.body)
 
   data['result'].map do |item|
