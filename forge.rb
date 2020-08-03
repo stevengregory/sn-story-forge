@@ -8,9 +8,10 @@ require 'reverse_markdown'
 require 'fileutils'
 
 host = ENV['HOST']
-user = ENV['USERNAME']
+user_name = ENV['USERNAME']
 pwd = ENV['PASSWORD']
 table = ENV['TABLE']
+user_sys_id = ENV['USER_SYS_ID']
 
 @path = 'stories/'
 
@@ -75,10 +76,10 @@ def do_template story, short_description, description, acceptance_criteria, assi
 end
 
 begin
-  auth = "Basic #{Base64.strict_encode64("#{user}:#{pwd}")}"
+  auth = "Basic #{Base64.strict_encode64("#{user_name}:#{pwd}")}"
   filter = {
     active: 'true',
-    assigned_to: '6f0d65f5db0332008798ffa31d961945',
+    assigned_to: user_sys_id,
     sysparm_display_value: 'true'
   }
   limit = 5
