@@ -14,8 +14,28 @@ table = ENV['TABLE']
 
 @path = 'stories/'
 
-def acceptance_criteria item
+def convert_to_markdown item
   ReverseMarkdown.convert item['acceptance_criteria'].strip
+end
+
+def get_acceptance_criteria item
+  "## ✅ Acceptance Criteria\n\n#{convert_to_markdown item}"
+end
+
+def get_assigned_to item
+  "## 😀 Assigned To\n\n#{item['assigned_to']['display_value']}\n\n"
+end
+
+def get_created_by item
+  "## 🌱 Created By\n\n#{item['sys_created_by']}\n\n"
+end
+
+def get_description item
+  "## 📋 Description\n\n#{item['description']}\n\n"
+end
+
+def get_last_updated item
+  "## 🗓️ Last Updated\n\n#{item['sys_updated_on']} by #{item['sys_updated_by']}\n"
 end
 
 def get_short_description item
@@ -24,6 +44,10 @@ end
 
 def get_state item
   "## 🚀 State\n\n#{item['state']}\n\n"
+end
+
+def get_story item
+  "# [#{item['number']}](#{ENV['HOST']}/nav_to.do?uri=rm_story.do?sys_id=#{item['sys_id']}%26sysparm_view=scrum)\n\n"
 end
 
 def get_story_points item
@@ -36,22 +60,18 @@ def remove_files path
   FileUtils.rm_rf Dir.glob("#{path}*")
 end
 
-def do_template story, short_description, description, ac, assigned_to, story_points, state, created_by, last_updated
+def do_template story, short_description, description, acceptance_criteria, assigned_to, story_points, state, created_by, last_updated
   [
     story,
     short_description,
     description,
-    ac,
+    acceptance_criteria,
     assigned_to,
     story_points,
     state,
     created_by,
     last_updated
   ]
-end
-
-def map_fields
-
 end
 
 begin
@@ -69,22 +89,17 @@ begin
   remove_files @path
 
   data['result'].first(limit).map do |item|
-    ac = "## ✅ Acceptance Criteria\n\n#{acceptance_criteria item}"
-    assigned_to = "## 😀 Assigned To\n\n#{item['assigned_to']['display_value']}\n\n"
-    created_by = "## 🌱 Created By\n\n#{item['sys_created_by']}\n\n"
-    description = "## 📋 Description\n\n#{item['description']}\n\n"
-    last_updated = "## 🗓️ Last Updated\n\n#{item['sys_updated_on']} by #{item['sys_updated_by']}\n"
-    story = "# [#{item['number']}](#{ENV['HOST']}/nav_to.do?uri=rm_story.do?sys_id=#{item['sys_id']}%26sysparm_view=scrum)\n\n"
     template = do_template(
-      story,
+      get_story(item),
       get_short_description(item),
-      description,
-      ac,
-      assigned_to,
+      get_description(item),
+      get_acceptance_criteria(item),
+      get_assigned_to(item),
       get_story_points(item),
       get_state(item),
-      created_by,
-      last_updated).join
+      get_created_by(item),
+      get_last_updated(item)
+    ).join
     File.write("#{@path}#{item['number']}.md", template)
   end
 
