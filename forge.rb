@@ -88,7 +88,11 @@ begin
   remove_files @path
 
   data['result'].first(limit).map do |item|
-    File.write("#{@path}#{item['number']}.md", get_markdown_template(item))
+    dir_path = item['state'].to_s.downcase
+    FileUtils.mkdir_p(@path) if !File.directory?(@path)
+    Dir.mkdir @path + dir_path if !File.directory?(@path + dir_path)
+    file_path = "#{@path}#{dir_path}/#{item['number']}.md"
+    File.write(file_path, get_markdown_template(item))
   end
 rescue RestClient::ExceptionWithResponse => e
   e.response
