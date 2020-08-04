@@ -15,11 +15,11 @@ user_sys_id = ENV['USER_SYS_ID']
 
 @path = 'stories/'
 
-def convert_to_markdown item
+def convert_to_markdown(item)
   ReverseMarkdown.convert item['acceptance_criteria'].strip
 end
 
-def get_markdown_template item
+def get_markdown_template(item)
   [
     get_story(item),
     get_short_description(item),
@@ -33,45 +33,43 @@ def get_markdown_template item
   ].join
 end
 
-def get_acceptance_criteria item
+def get_acceptance_criteria(item)
   "## ✅ Acceptance Criteria\n\n#{convert_to_markdown item}"
 end
 
-def get_assigned_to item
+def get_assigned_to(item)
   "## 😀 Assigned To\n\n#{item['assigned_to']['display_value']}\n\n"
 end
 
-def get_created_by item
+def get_created_by(item)
   "## 🌱 Created By\n\n#{item['sys_created_by']}\n\n"
 end
 
-def get_description item
+def get_description(item)
   "## 📋 Description\n\n#{item['description']}\n\n"
 end
 
-def get_last_updated item
+def get_last_updated(item)
   "## 🗓️ Last Updated\n\n#{item['sys_updated_on']} by #{item['sys_updated_by']}\n"
 end
 
-def get_short_description item
+def get_short_description(item)
   "#{item['short_description']}\n\n"
 end
 
-def get_state item
+def get_state(item)
   "## 🚀 State\n\n#{item['state']}\n\n"
 end
 
-def get_story item
+def get_story(item)
   "# [#{item['number']}](#{ENV['HOST']}/nav_to.do?uri=rm_story.do?sys_id=#{item['sys_id']}%26sysparm_view=scrum)\n\n"
 end
 
-def get_story_points item
-  unless item['story_points'].to_s.empty?
-    "## 🧮 Story Points\n\n#{item['story_points']}\n\n"
-  end
+def get_story_points(item)
+  "## 🧮 Story Points\n\n#{item['story_points']}\n\n" if !item['story_points'].to_s.empty?
 end
 
-def remove_files path
+def remove_files(path)
   FileUtils.rm_rf Dir.glob("#{path}*")
 end
 
