@@ -19,6 +19,20 @@ def convert_to_markdown item
   ReverseMarkdown.convert item['acceptance_criteria'].strip
 end
 
+def get_markdown_template item
+  [
+    get_story(item),
+    get_short_description(item),
+    get_description(item),
+    get_acceptance_criteria(item),
+    get_assigned_to(item),
+    get_story_points(item),
+    get_state(item),
+    get_created_by(item),
+    get_last_updated(item)
+  ].join
+end
+
 def get_acceptance_criteria item
   "## ✅ Acceptance Criteria\n\n#{convert_to_markdown item}"
 end
@@ -61,20 +75,6 @@ def remove_files path
   FileUtils.rm_rf Dir.glob("#{path}*")
 end
 
-def do_template story, short_description, description, acceptance_criteria, assigned_to, story_points, state, created_by, last_updated
-  [
-    story,
-    short_description,
-    description,
-    acceptance_criteria,
-    assigned_to,
-    story_points,
-    state,
-    created_by,
-    last_updated
-  ]
-end
-
 begin
   auth = "Basic #{Base64.strict_encode64("#{user_name}:#{pwd}")}"
   filter = {
@@ -90,18 +90,7 @@ begin
   remove_files @path
 
   data['result'].first(limit).map do |item|
-    template = do_template(
-      get_story(item),
-      get_short_description(item),
-      get_description(item),
-      get_acceptance_criteria(item),
-      get_assigned_to(item),
-      get_story_points(item),
-      get_state(item),
-      get_created_by(item),
-      get_last_updated(item)
-    ).join
-    File.write("#{@path}#{item['number']}.md", template)
+    File.write("#{@path}#{item['number']}.md", get_markdown_template(item))
   end
 
 rescue => e
