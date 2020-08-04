@@ -15,8 +15,8 @@ user_sys_id = ENV['USER_SYS_ID']
 
 @path = 'stories/'
 
-def convert_to_markdown(item)
-  ReverseMarkdown.convert item['acceptance_criteria'].strip
+def convert_to_markdown(item, field)
+  ReverseMarkdown.convert item[field].strip
 end
 
 def get_markdown_template(item)
@@ -34,7 +34,7 @@ def get_markdown_template(item)
 end
 
 def get_acceptance_criteria(item)
-  "## ✅ Acceptance Criteria\n\n#{convert_to_markdown item}"
+  "## ✅ Acceptance Criteria\n\n#{convert_to_markdown item, 'acceptance_criteria'}"
 end
 
 def get_assigned_to(item)
@@ -85,7 +85,7 @@ begin
   response = RestClient.get table, params: filter, authorization: auth
   data = JSON.parse(response.body)
 
-  remove_files @path
+  remove_files @path if File.directory?(@path)
 
   data['result'].first(limit).map do |item|
     dir_path = item['state'].to_s.downcase
