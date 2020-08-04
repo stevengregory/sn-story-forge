@@ -8,3 +8,4 @@ gem 'dotenv-rails'
 gem 'json'
 gem 'rest-client'
 gem 'reverse_markdown'
+gem 'rubocop', require: false

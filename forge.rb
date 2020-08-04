@@ -92,6 +92,6 @@ begin
   data['result'].first(limit).map do |item|
     File.write("#{@path}#{item['number']}.md", get_markdown_template(item))
   end
-
-rescue => e
-  puts "ERROR: #{e}" end
+rescue RestClient::ExceptionWithResponse => e
+  e.response
+end
