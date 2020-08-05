@@ -78,8 +78,8 @@ def do_request(host, user_name, password)
     }
     table = 'rm_story'
     limit = 5
-    table = "#{host}/api/now/table/#{table}"
-    response = RestClient.get table, params: filter, authorization: auth
+    url = "#{host}/api/now/table/#{table}"
+    response = RestClient.get url, params: filter, authorization: auth
     data = JSON.parse(response.body)
 
     remove_files @path if File.directory?(@path)
