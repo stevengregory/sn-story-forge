@@ -7,12 +7,6 @@ require 'rest-client'
 require 'reverse_markdown'
 require 'fileutils'
 
-host = ENV['HOST']
-user_name = ENV['USERNAME']
-pwd = ENV['PASSWORD']
-table = ENV['TABLE']
-user_sys_id = ENV['USER_SYS_ID']
-
 @path = 'stories/'
 
 def convert_to_markdown(item, field)
@@ -73,27 +67,33 @@ def remove_files(path)
   FileUtils.rm_rf Dir.glob("#{path}*")
 end
 
-begin
-  auth = "Basic #{Base64.strict_encode64("#{user_name}:#{pwd}")}"
-  filter = {
-    active: 'true',
-    assigned_to: user_sys_id,
-    sysparm_display_value: 'true'
-  }
-  limit = 5
-  table = "#{host}/api/now/table/#{table}"
-  response = RestClient.get table, params: filter, authorization: auth
-  data = JSON.parse(response.body)
+def do_request(host, user_name, password)
+  begin
+    auth = "Basic #{Base64.strict_encode64("#{user_name}:#{password}")}"
+    user = '6f0d65f5db0332008798ffa31d961945'
+    filter = {
+      active: 'true',
+      assigned_to: user,
+      sysparm_display_value: 'true'
+    }
+    table = 'rm_story'
+    limit = 5
+    table = "#{host}/api/now/table/#{table}"
+    response = RestClient.get table, params: filter, authorization: auth
+    data = JSON.parse(response.body)
 
-  remove_files @path if File.directory?(@path)
+    remove_files @path if File.directory?(@path)
 
-  data['result'].first(limit).map do |item|
-    dir_path = item['state'].to_s.downcase
-    FileUtils.mkdir_p(@path) if !File.directory?(@path)
-    Dir.mkdir @path + dir_path if !File.directory?(@path + dir_path)
-    file_path = "#{@path}#{dir_path}/#{item['number']}.md"
-    File.write(file_path, get_markdown_template(item))
+    data['result'].first(limit).map do |item|
+      dir_path = item['state'].to_s.downcase
+      FileUtils.mkdir_p(@path) if !File.directory?(@path)
+      Dir.mkdir @path + dir_path if !File.directory?(@path + dir_path)
+      file_path = "#{@path}#{dir_path}/#{item['number']}.md"
+      File.write(file_path, get_markdown_template(item))
+    end
+  rescue RestClient::ExceptionWithResponse => e
+    e.response
   end
-rescue RestClient::ExceptionWithResponse => e
-  e.response
 end
+
+do_request ENV['HOST'], ENV['USERNAME'], ENV['PASSWORD']
