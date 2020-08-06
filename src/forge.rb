@@ -29,7 +29,6 @@ module StoryForge
           Dir.mkdir config['path'] + dir_path if !File.directory?(config['path'] + dir_path)
           file_path = "#{config['path']}#{dir_path}/#{item['number']}.md"
           File.write(file_path, Template.get_markdown_template(item))
-        end
       rescue RestClient::ExceptionWithResponse => e
         e.response
       end
