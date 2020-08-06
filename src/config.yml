@@ -1,0 +1,8 @@
+filter: {
+  active: 'true',
+  assigned_to: '6f0d65f5db0332008798ffa31d961945',
+  sysparm_display_value: 'true'
+}
+limit: 5
+path: stories/
+table: rm_story
