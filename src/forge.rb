@@ -8,8 +8,6 @@ require 'reverse_markdown'
 require 'fileutils'
 require 'yaml'
 
-@config = YAML.load_file('src/config.yml')
-
 def convert_to_markdown(item, field)
   ReverseMarkdown.convert item[field].strip
 end
@@ -68,20 +66,21 @@ def remove_files(path)
   FileUtils.rm_rf Dir.glob("#{path}*")
 end
 
-def do_request(host, user_name, password, config)
+def do_request(host, user_name, password)
   begin
+    config = YAML.load_file('src/config.yml')
     auth = "Basic #{Base64.strict_encode64("#{user_name}:#{password}")}"
     url = "#{host}/api/now/table/#{config['table']}"
     response = RestClient.get url, params: config['filter'], authorization: auth
     data = JSON.parse(response.body)
 
-    remove_files @config['path'] + '*' if File.directory?(@config['path'])
+    remove_files config['path'] + '*' if File.directory?(config['path'])
 
     data['result'].first(config['limit']).map do |item|
       dir_path = item['state'].to_s.downcase
-      FileUtils.mkdir_p(@config['path']) if !File.directory?(@config['path'])
-      Dir.mkdir @config['path'] + dir_path if !File.directory?(@config['path'] + dir_path)
-      file_path = "#{@config['path']}#{dir_path}/#{item['number']}.md"
+      FileUtils.mkdir_p(config['path']) if !File.directory?(config['path'])
+      Dir.mkdir config['path'] + dir_path if !File.directory?(config['path'] + dir_path)
+      file_path = "#{config['path']}#{dir_path}/#{item['number']}.md"
       File.write(file_path, get_markdown_template(item))
     end
   rescue RestClient::ExceptionWithResponse => e
@@ -89,4 +88,4 @@ def do_request(host, user_name, password, config)
   end
 end
 
-do_request ENV['HOST'], ENV['USERNAME'], ENV['PASSWORD'], @config
+do_request ENV['HOST'], ENV['USERNAME'], ENV['PASSWORD']
