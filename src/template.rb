@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+require 'dotenv/load'
 require 'reverse_markdown'
+require_relative 'forge'
 
 module StoryForge
   class Template
@@ -18,7 +20,8 @@ module StoryForge
         get_story_points(item),
         get_state(item),
         get_created_by(item),
-        get_last_updated(item)
+        get_last_updated(item),
+        get_work_notes(item)
       ].join
     end
 
@@ -39,7 +42,7 @@ module StoryForge
     end
 
     def self.get_last_updated(item)
-      "## 🗓️ Last Updated\n\n#{item['sys_updated_on']} by #{item['sys_updated_by']}\n"
+      "## 🗓️ Last Updated\n\n#{item['sys_updated_on']} by #{item['sys_updated_by']}\n\n"
     end
 
     def self.get_short_description(item)
@@ -56,6 +59,10 @@ module StoryForge
 
     def self.get_story_points(item)
       "## 🧮 Story Points\n\n#{item['story_points']}\n\n" if !item['story_points'].to_s.empty?
+    end
+
+    def self.get_work_notes(item)
+      "## 📝 Work Notes\n\n#{Forge.get_work_notes ENV['HOST'], ENV['USERNAME'], ENV['PASSWORD'], item['sys_id']}"
     end
   end
 end
