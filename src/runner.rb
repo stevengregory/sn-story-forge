@@ -4,5 +4,5 @@ require 'dotenv/load'
 require_relative 'forge'
 
 module StoryForge
-  Forge.do_request ENV['HOST'], ENV['USERNAME'], ENV['PASSWORD']
+  Forge.get_stories ENV['HOST'], ENV['USERNAME'], ENV['PASSWORD']
 end

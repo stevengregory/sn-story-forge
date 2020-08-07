@@ -45,7 +45,7 @@ module StoryForge
       response = RestClient.get url, params: filter, authorization: auth
       data = JSON.parse(response.body)
       notes = data['result'].first(10).map do |item|
-        "*#{item['sys_created_on']}*\n> #{item['value']}\n\n"
+        "#### #{item['sys_created_on']}\n\n#{item['value']}\n\n"
       end
       return notes.join()
       rescue RestClient::ExceptionWithResponse => e
