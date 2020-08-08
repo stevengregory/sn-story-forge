@@ -1,16 +1,12 @@
 # frozen_string_literal: true
 
 require 'dotenv/load'
-require 'reverse_markdown'
 require_relative 'config'
 require_relative 'story'
+require_relative 'util'
 
 module StoryForge
   class Template
-    def self.convert_to_markdown(item, field)
-      ReverseMarkdown.convert item[field].strip
-    end
-
     def self.get_markdown_template(item)
       [
         get_story(item),
@@ -27,7 +23,7 @@ module StoryForge
     end
 
     def self.get_acceptance_criteria(item)
-      "## ✅ Acceptance Criteria\n\n#{convert_to_markdown item, 'acceptance_criteria'}"
+      "## ✅ Acceptance Criteria\n\n#{Util.convert_to_markdown item, 'acceptance_criteria'}"
     end
 
     def self.get_assigned_to(item)

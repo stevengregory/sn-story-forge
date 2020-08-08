@@ -3,20 +3,16 @@
 require 'base64'
 require 'json'
 require 'rest-client'
-require 'fileutils'
 require_relative 'config'
 require_relative 'template'
+require_relative 'util'
 
 module StoryForge
   class Story
-    def self.remove_files(path)
-      FileUtils.rm_rf Dir.glob("#{path}*")
-    end
-
     def self.get_stories(host, user_name, password)
       config = Config.get_story_config
       story_path = config[:path]
-      remove_files story_path if File.directory?(story_path)
+      Util.remove_files story_path
       auth = "Basic #{Base64.strict_encode64("#{user_name}:#{password}")}"
       url = "#{host}/api/now/table/rm_story"
       response = RestClient.get url, params: config[:filter], authorization: auth
