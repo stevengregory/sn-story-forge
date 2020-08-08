@@ -8,7 +8,7 @@ require 'yaml'
 require_relative 'template'
 
 module StoryForge
-  class Forge
+  class Story
     def self.remove_files(path)
       FileUtils.rm_rf Dir.glob("#{path}*")
     end
