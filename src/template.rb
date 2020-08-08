@@ -63,7 +63,9 @@ module StoryForge
     end
 
     def self.get_work_notes(item)
-      "## 📝 Work Notes\n\n#{Story.get_work_notes ENV['HOST'], ENV['USERNAME'], ENV['PASSWORD'], item['sys_id'], Config.get_work_note_config(item['sys_id'])}"
+      config = Config.get_work_note_config(item['sys_id'])
+      work_notes = Story.get_work_notes ENV['HOST'], ENV['USERNAME'], ENV['PASSWORD'], item['sys_id'], config
+      "## 📝 Work Notes\n\n#{work_notes}" if !work_notes.to_s.empty?
     end
   end
 end
