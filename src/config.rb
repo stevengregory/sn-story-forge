@@ -1,0 +1,29 @@
+# frozen_string_literal: true
+
+module StoryForge
+  class Config
+    def self.get_story_config
+      {
+        filter: {
+          active: 'true',
+          assigned_to: '6f0d65f5db0332008798ffa31d961945',
+          sysparm_display_value: 'true'
+        },
+        limit: 10,
+        path: 'stories/'
+      }
+    end
+
+    def self.get_work_note_config(sysId)
+      {
+        filter: {
+          active: 'true',
+          element: 'work_notes',
+          element_id: sysId,
+          sysparm_display_value: 'true',
+        },
+        limit: 5
+      }
+    end
+  end
+end

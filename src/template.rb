@@ -2,7 +2,8 @@
 
 require 'dotenv/load'
 require 'reverse_markdown'
-require_relative 'forge'
+require_relative 'config'
+require_relative 'story'
 
 module StoryForge
   class Template
@@ -62,7 +63,7 @@ module StoryForge
     end
 
     def self.get_work_notes(item)
-      "## 📝 Work Notes\n\n#{Forge.get_work_notes ENV['HOST'], ENV['USERNAME'], ENV['PASSWORD'], item['sys_id']}"
+      "## 📝 Work Notes\n\n#{Story.get_work_notes ENV['HOST'], ENV['USERNAME'], ENV['PASSWORD'], item['sys_id'], Config.get_work_note_config(item['sys_id'])}"
     end
   end
 end
