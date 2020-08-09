@@ -2,7 +2,7 @@
 
 module StoryForge
   class Config
-    def self.get_story_config
+    def get_story_config
       {
         filter: {
           active: 'true',
@@ -14,7 +14,7 @@ module StoryForge
       }
     end
 
-    def self.get_work_note_config(sysId)
+    def get_work_note_config(sysId)
       {
         filter: {
           active: 'true',
