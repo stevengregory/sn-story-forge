@@ -26,7 +26,7 @@ module StoryForge
     end
 
     def get_stories
-      config = Config.new.get_story_config
+      config = Config.story_options
       story_path = config[:path]
       Util.new.remove_files story_path
       auth = "Basic #{Base64.strict_encode64("#{@user_name}:#{@password}")}"

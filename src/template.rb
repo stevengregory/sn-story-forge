@@ -58,7 +58,7 @@ module StoryForge
     end
 
     def get_work_notes(item)
-      config = Config.new.get_work_note_config(item['sys_id'])
+      config = Config.work_note_options(item['sys_id'])
       work_notes = Story.new.get_work_notes item['sys_id'], config
       "## 📝 Work Notes\n\n#{work_notes}" if !work_notes.to_s.empty?
     end
