@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'reverse_markdown'
 require 'fileutils'
+require 'reverse_markdown'
 
 module StoryForge
   class Util
