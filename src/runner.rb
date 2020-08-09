@@ -3,5 +3,5 @@
 require_relative 'story'
 
 module StoryForge
-  StoryForge::Story.new.get_stories
+  StoryForge::Story.new.forge
 end

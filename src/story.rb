@@ -27,7 +27,6 @@ module StoryForge
     end
 
     def get_stories
-      StoryForge::Util.new.remove_files @config[:path]
       auth = "Basic #{Base64.strict_encode64("#{@user_name}:#{@password}")}"
       url = "#{@host}/api/now/table/rm_story"
       response = RestClient.get url, params: @config[:filter], authorization: auth
@@ -50,6 +49,11 @@ module StoryForge
       return notes.join()
       rescue RestClient::ExceptionWithResponse => e
         e.response
+    end
+
+    def forge
+      StoryForge::Util.new.remove_files @config[:path]
+      get_stories
     end
   end
 end
