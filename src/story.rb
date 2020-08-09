@@ -14,6 +14,7 @@ module StoryForge
       @host = ENV['HOST']
       @user_name = ENV['USERNAME']
       @password = ENV['PASSWORD']
+      @config = StoryForge::Config::story_options
     end
 
     def build_story(item, story_path)
@@ -26,15 +27,13 @@ module StoryForge
     end
 
     def get_stories
-      config = StoryForge::Config.story_options
-      story_path = config[:path]
-      StoryForge::Util.new.remove_files story_path
+      StoryForge::Util.new.remove_files @config[:path]
       auth = "Basic #{Base64.strict_encode64("#{@user_name}:#{@password}")}"
       url = "#{@host}/api/now/table/rm_story"
-      response = RestClient.get url, params: config[:filter], authorization: auth
+      response = RestClient.get url, params: @config[:filter], authorization: auth
       data = JSON.parse(response.body)
-      data['result'].first(config[:limit]).map do |item|
-        build_story item, story_path
+      data['result'].first(@config[:limit]).map do |item|
+        build_story item, @config[:path]
       end
       rescue RestClient::ExceptionWithResponse => e
         e.response
