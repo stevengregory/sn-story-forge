@@ -6,7 +6,7 @@ require_relative 'util'
 
 module StoryForge
   class Template
-    def get_markdown_template(item)
+    def markdown_template(item)
       [
         get_story(item),
         get_short_description(item),
@@ -58,8 +58,8 @@ module StoryForge
     end
 
     def get_work_notes(item)
-      config = Config.work_note_options(item['sys_id'])
-      work_notes = Story.new.get_work_notes item['sys_id'], config
+      config = StoryForge::Config::work_note_options(item['sys_id'])
+      work_notes = StoryForge::Story.new.get_work_notes item['sys_id'], config
       "## 📝 Work Notes\n\n#{work_notes}" if !work_notes.to_s.empty?
     end
   end
