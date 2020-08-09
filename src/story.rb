@@ -10,27 +10,31 @@ require_relative 'util'
 
 module StoryForge
   class Story
-
     def initialize
       @host = ENV['HOST']
       @user_name = ENV['USERNAME']
       @password = ENV['PASSWORD']
     end
 
+    def build_story(item, story_path)
+      story_number = item['number']
+      state_path = item['state'].to_s.downcase
+      file_path = "#{story_path}#{state_path}/#{story_number}.md"
+      Util.new.make_directory story_path
+      Util.new.make_directory story_path + state_path
+      File.write(file_path, Template.new.get_markdown_template(item))
+    end
+
     def get_stories
       config = Config.new.get_story_config
       story_path = config[:path]
-      Util.remove_files story_path
+      Util.new.remove_files story_path
       auth = "Basic #{Base64.strict_encode64("#{@user_name}:#{@password}")}"
       url = "#{@host}/api/now/table/rm_story"
       response = RestClient.get url, params: config[:filter], authorization: auth
       data = JSON.parse(response.body)
       data['result'].first(config[:limit]).map do |item|
-        state_path = item['state'].to_s.downcase
-        Dir.mkdir(story_path) if !File.directory?(story_path)
-        Dir.mkdir story_path + state_path if !File.directory?(story_path + state_path)
-        file_path = "#{story_path}#{state_path}/#{item['number']}.md"
-        File.write(file_path, Template.new.get_markdown_template(item))
+        build_story item, story_path
       end
       rescue RestClient::ExceptionWithResponse => e
         e.response

@@ -22,7 +22,7 @@ module StoryForge
     end
 
     def get_acceptance_criteria(item)
-      "## ✅ Acceptance Criteria\n\n#{Util.convert_to_markdown item, 'acceptance_criteria'}"
+      "## ✅ Acceptance Criteria\n\n#{Util.new.convert_to_markdown item, 'acceptance_criteria'}"
     end
 
     def get_assigned_to(item)
