@@ -12,6 +12,7 @@ module StoryForge
         get_short_description(item),
         get_description(item),
         get_acceptance_criteria(item),
+        get_epic(item),
         get_assigned_to(item),
         get_story_points(item),
         get_state(item),
@@ -37,12 +38,16 @@ module StoryForge
       "## 📋 Description\n\n#{item['description']}\n\n" if !item['description'].empty?
     end
 
+    def get_epic(item)
+      "## 📁 Epic\n\n#{item['epic']['display_value']}\n\n" if !item['epic'].empty?
+    end
+
     def get_last_updated(item)
       "## 🗓️ Last Updated\n\n#{item['sys_updated_on']} by #{item['sys_updated_by']}\n\n"
     end
 
     def get_short_description(item)
-      "#{item['short_description']}\n\n"
+      "## 📄 Short Description\n\n#{item['short_description']}\n\n"
     end
 
     def get_state(item)

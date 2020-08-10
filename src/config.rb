@@ -9,7 +9,7 @@ module StoryForge
             assigned_to: 'Steven Gregory',
             sysparm_display_value: 'true'
           },
-          limit: 15,
+          limit: 20,
           path: 'stories/'
         }
       end
