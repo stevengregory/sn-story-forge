@@ -6,11 +6,10 @@ module StoryForge
       def story_options
         {
           filter: {
-            active: 'true',
-            assigned_to: '6f0d65f5db0332008798ffa31d961945',
+            assigned_to: 'Steven Gregory',
             sysparm_display_value: 'true'
           },
-          limit: 10,
+          limit: 15,
           path: 'stories/'
         }
       end
@@ -21,9 +20,9 @@ module StoryForge
             active: 'true',
             element: 'work_notes',
             element_id: sysId,
-            sysparm_display_value: 'true',
+            sysparm_display_value: 'true'
           },
-          limit: 5
+          limit: 10
         }
       end
     end

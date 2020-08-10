@@ -43,7 +43,7 @@ module StoryForge
       url = "#{@host}/api/now/table/sys_journal_field"
       response = RestClient.get url, params: config[:filter], authorization: auth
       data = JSON.parse(response.body)
-      notes = data['result'].first(config[:limit]).map do |item|
+      notes = data['result'].sort_by {|k, v| k['sys_created_on']}.first(config[:limit]).map do |item|
         "---\n\n#### #{item['sys_created_by']}\n\n#{item['value']}\n\n_#{item['sys_created_on']}_\n\n---"
       end
       return notes.join()

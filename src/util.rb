@@ -6,7 +6,7 @@ require 'reverse_markdown'
 module StoryForge
   class Util
     def convert_to_markdown(item, field)
-      ReverseMarkdown.convert item[field].strip
+      ReverseMarkdown.convert item[field]
     end
 
     def make_directory(path)
