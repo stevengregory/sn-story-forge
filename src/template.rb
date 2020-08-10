@@ -34,7 +34,7 @@ module StoryForge
     end
 
     def get_description(item)
-      "## 📋 Description\n\n#{item['description']}\n\n"
+      "## 📋 Description\n\n#{item['description']}\n\n" if !item['description'].empty?
     end
 
     def get_last_updated(item)
