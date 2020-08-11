@@ -39,7 +39,10 @@ module StoryForge
     end
 
     def get_epic(item)
-      "## 📁 Epic\n\n#{item['epic']['display_value']}\n\n" if !item['epic'].empty?
+      if !item['epic'].empty?
+        epic_id = item['epic']['link'].chars.last(32).join
+        "## 📁 Epic\n\n[#{item['epic']['display_value']}](#{ENV['HOST']}nav_to.do?uri=rm_epic.do?sys_id=#{epic_id}&sysparm_view=scrum)\n\n"
+      end
     end
 
     def get_last_updated(item)
@@ -55,7 +58,7 @@ module StoryForge
     end
 
     def get_story(item)
-      "# [#{item['number']}](#{ENV['HOST']}/nav_to.do?uri=rm_story.do?sys_id=#{item['sys_id']}%26sysparm_view=scrum)\n\n"
+      "# [#{item['number']}](#{ENV['HOST']}nav_to.do?uri=rm_story.do?sys_id=#{item['sys_id']}&sysparm_view=scrum)\n\n"
     end
 
     def get_story_points(item)
