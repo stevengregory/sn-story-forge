@@ -2,6 +2,7 @@
 
 require 'base64'
 require 'dotenv/load'
+require 'json'
 require 'rest-client'
 
 module StoryForge
@@ -15,7 +16,8 @@ module StoryForge
     def do_request(table, filter)
       auth = "Basic #{Base64.strict_encode64("#{@user_name}:#{@password}")}"
       url = "#{@host}/api/now/table/#{table}"
-      RestClient.get url, params: filter, authorization: auth
+      response = RestClient.get url, params: filter, authorization: auth
+      JSON.parse(response.body)
     end
   end
 end

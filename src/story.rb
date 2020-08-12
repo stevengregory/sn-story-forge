@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'json'
 require 'rest-client'
 require 'yaml'
 require_relative 'config'
@@ -38,8 +37,7 @@ module StoryForge
     end
 
     def get_stories
-      response = StoryForge::Request.new.do_request 'rm_story', @config[:filter]
-      data = JSON.parse(response.body)
+      data = StoryForge::Request.new.do_request 'rm_story', @config[:filter]
       data['result'].first(@config[:limit]).map do |item|
         build_story item, @config[:path]
         archive_story item, @config[:path]
@@ -49,8 +47,7 @@ module StoryForge
     end
 
     def get_work_notes(sysId, config)
-      response = StoryForge::Request.new.do_request 'sys_journal_field', config[:filter]
-      data = JSON.parse(response.body)
+      data = StoryForge::Request.new.do_request 'sys_journal_field', config[:filter]
       notes = data['result'].sort_by {|key| key['sys_created_on']}.first(config[:limit]).map do |item|
         "---\n\n#### #{item['sys_created_by']}\n\n#{item['value']}\n\n_#{item['sys_created_on']}_\n\n---"
       end
