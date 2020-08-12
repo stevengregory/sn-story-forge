@@ -1,21 +1,17 @@
 # frozen_string_literal: true
 
-require 'base64'
-require 'dotenv/load'
 require 'json'
 require 'rest-client'
 require 'yaml'
 require_relative 'config'
+require_relative 'request'
 require_relative 'template'
 require_relative 'util'
 
 module StoryForge
   class Story
     def initialize
-      @host = ENV['HOST']
-      @user_name = ENV['USERNAME']
-      @password = ENV['PASSWORD']
-      @config = StoryForge::Config::story_options
+      @config = StoryForge::Config.story_options
     end
 
     def archive_story(item, story_path)
@@ -42,29 +38,25 @@ module StoryForge
     end
 
     def get_stories
-      auth = "Basic #{Base64.strict_encode64("#{@user_name}:#{@password}")}"
-      url = "#{@host}/api/now/table/rm_story"
-      response = RestClient.get url, params: @config[:filter], authorization: auth
+      response = StoryForge::Request.new.do_request 'rm_story', @config[:filter]
       data = JSON.parse(response.body)
       data['result'].first(@config[:limit]).map do |item|
         build_story item, @config[:path]
         archive_story item, @config[:path]
       end
-      rescue RestClient::ExceptionWithResponse => e
-        e.response
+    rescue RestClient::ExceptionWithResponse => e
+      e.response
     end
 
     def get_work_notes(sysId, config)
-      auth = "Basic #{Base64.strict_encode64("#{@user_name}:#{@password}")}"
-      url = "#{@host}/api/now/table/sys_journal_field"
-      response = RestClient.get url, params: config[:filter], authorization: auth
+      response = StoryForge::Request.new.do_request 'sys_journal_field', config[:filter]
       data = JSON.parse(response.body)
-      notes = data['result'].sort_by {|k, v| k['sys_created_on']}.first(config[:limit]).map do |item|
+      notes = data['result'].sort_by {|key| key['sys_created_on']}.first(config[:limit]).map do |item|
         "---\n\n#### #{item['sys_created_by']}\n\n#{item['value']}\n\n_#{item['sys_created_on']}_\n\n---"
       end
-      return notes.join()
-      rescue RestClient::ExceptionWithResponse => e
-        e.response
+      notes.join()
+    rescue RestClient::ExceptionWithResponse => e
+      e.response
     end
   end
 end

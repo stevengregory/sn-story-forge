@@ -1,4 +1,4 @@
 AllCops:
   TargetRubyVersion: 2.5
   Exclude:
-    - 'temp/**'
+    - "tmp/**"
