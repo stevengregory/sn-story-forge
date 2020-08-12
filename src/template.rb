@@ -18,7 +18,8 @@ module StoryForge
         get_state(item),
         get_created_by(item),
         get_last_updated(item),
-        get_work_notes(item)
+        get_work_notes(item),
+        get_story_info(item)
       ].join
     end
 
@@ -31,7 +32,7 @@ module StoryForge
     end
 
     def get_created_by(item)
-      "## 🌱 Created By\n\n#{item['sys_created_by']}\n\n"
+      "## 🌱 Created By\n\n#{item['sys_created_by']}\n\n" if !item['sys_created_by'].empty?
     end
 
     def get_description(item)
@@ -59,6 +60,10 @@ module StoryForge
 
     def get_story(item)
       "# [#{item['number']}](#{ENV['HOST']}nav_to.do?uri=rm_story.do?sys_id=#{item['sys_id']}&sysparm_view=scrum)\n\n"
+    end
+
+    def get_story_info(item)
+      "\n\n#### [See All Story Data](./../../../Archive/#{item['number']}.yml)\n\n"
     end
 
     def get_story_points(item)

@@ -4,6 +4,7 @@ require 'base64'
 require 'dotenv/load'
 require 'json'
 require 'rest-client'
+require 'yaml'
 require_relative 'config'
 require_relative 'template'
 require_relative 'util'
@@ -18,12 +19,14 @@ module StoryForge
     end
 
     def build_story(item, story_path)
-      story_number = item['number']
-      state_path = item['state'].to_s.downcase
-      file_path = "#{story_path}#{state_path}/#{story_number}.md"
-      StoryForge::Util.new.make_directory story_path
-      StoryForge::Util.new.make_directory story_path + state_path
+      project = item['assignment_group']['display_value'].to_s
+      state_path = item['state'].to_s.capitalize
+      file_path = "#{story_path}/#{@config[:product]}/#{project}/#{state_path}/#{item['number']}.md"
+      archive_path = "#{story_path}/#{@config[:archive]}/#{item['number']}.yml"
+      StoryForge::Util.new.make_directory File.join(story_path, @config[:product], project, state_path)
+      StoryForge::Util.new.make_directory File.join(story_path, @config[:archive])
       File.write(file_path, Template.new.markdown_template(item))
+      File.write(archive_path, item.to_yaml)
     end
 
     def get_stories
@@ -52,7 +55,7 @@ module StoryForge
     end
 
     def forge
-      StoryForge::Util.new.remove_files @config[:path]
+      StoryForge::Util.new.remove_files File.join(@config[:path], @config[:product])
       get_stories
     end
   end
