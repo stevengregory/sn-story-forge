@@ -18,15 +18,19 @@ module StoryForge
       @config = StoryForge::Config::story_options
     end
 
+    def archive_story(item, story_path)
+      archive_path = "#{story_path}/#{@config[:archive]}/#{item['number']}.yml"
+      StoryForge::Util.new.make_directory File.join(story_path, @config[:archive])
+      File.write(archive_path, item.to_yaml)
+    end
+
     def build_story(item, story_path)
       project = item['assignment_group']['display_value'].to_s
       state_path = item['state'].to_s.capitalize
       file_path = "#{story_path}/#{@config[:product]}/#{project}/#{state_path}/#{item['number']}.md"
-      archive_path = "#{story_path}/#{@config[:archive]}/#{item['number']}.yml"
       StoryForge::Util.new.make_directory File.join(story_path, @config[:product], project, state_path)
-      StoryForge::Util.new.make_directory File.join(story_path, @config[:archive])
       File.write(file_path, Template.new.markdown_template(item))
-      File.write(archive_path, item.to_yaml)
+      archive_story item, story_path
     end
 
     def get_stories
