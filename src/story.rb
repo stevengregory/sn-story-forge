@@ -33,6 +33,15 @@ module StoryForge
       archive_story item, story_path
     end
 
+    def delete_stories
+      StoryForge::Util.new.remove_files File.join(@config[:path], @config[:product])
+    end
+
+    def forge
+      delete_stories
+      get_stories
+    end
+
     def get_stories
       auth = "Basic #{Base64.strict_encode64("#{@user_name}:#{@password}")}"
       url = "#{@host}/api/now/table/rm_story"
@@ -56,11 +65,6 @@ module StoryForge
       return notes.join()
       rescue RestClient::ExceptionWithResponse => e
         e.response
-    end
-
-    def forge
-      StoryForge::Util.new.remove_files File.join(@config[:path], @config[:product])
-      get_stories
     end
   end
 end
