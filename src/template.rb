@@ -59,7 +59,7 @@ module StoryForge
     end
 
     def get_story(item)
-      "# [#{item['number']}](#{ENV['HOST']}nav_to.do?uri=rm_story.do?sys_id=#{item['sys_id']}&sysparm_view=scrum)\n\n"
+      "# [#{item['number']}](#{ENV['HOST']}/nav_to.do?uri=rm_story.do?sys_id=#{item['sys_id']}%26sysparm_view=scrum)\n\n"
     end
 
     def get_story_info(item)
