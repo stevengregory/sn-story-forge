@@ -30,7 +30,6 @@ module StoryForge
       file_path = "#{story_path}/#{@config[:product]}/#{project}/#{state_path}/#{item['number']}.md"
       StoryForge::Util.new.make_directory File.join(story_path, @config[:product], project, state_path)
       File.write(file_path, Template.new.markdown_template(item))
-      archive_story item, story_path
     end
 
     def delete_stories
@@ -49,6 +48,7 @@ module StoryForge
       data = JSON.parse(response.body)
       data['result'].first(@config[:limit]).map do |item|
         build_story item, @config[:path]
+        archive_story item, @config[:path]
       end
       rescue RestClient::ExceptionWithResponse => e
         e.response
