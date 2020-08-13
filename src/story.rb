@@ -10,25 +10,26 @@ require_relative 'util'
 module StoryForge
   class Story
     def initialize
-      @config = StoryForge::Config.story_options
+      @dir_config = StoryForge::Config::directory_options
+      @story_config = StoryForge::Config::story_options
     end
 
     def archive_story(item, story_path)
-      archive_path = "#{story_path}/#{@config[:archive]}/#{item['number']}.yml"
-      StoryForge::Util.new.make_directory File.join(story_path, @config[:archive])
+      archive_path = "#{story_path}/#{@dir_config[:archive]}/#{item['number']}.yml"
+      StoryForge::Util.new.make_directory File.join(story_path, @dir_config[:archive])
       File.write(archive_path, item.to_yaml)
     end
 
     def build_story(item, story_path)
       project = item['assignment_group']['display_value'].to_s
       state_path = item['state'].to_s.capitalize
-      file_path = "#{story_path}/#{@config[:product]}/#{project}/#{state_path}/#{item['number']}.md"
-      StoryForge::Util.new.make_directory File.join(story_path, @config[:product], project, state_path)
+      file_path = "#{story_path}/#{@dir_config[:product]}/#{project}/#{state_path}/#{item['number']}.md"
+      StoryForge::Util.new.make_directory File.join(story_path, @dir_config[:product], project, state_path)
       File.write(file_path, Template.new.markdown_template(item))
     end
 
     def delete_stories
-      StoryForge::Util.new.remove_files File.join(@config[:path], @config[:product])
+      StoryForge::Util.new.remove_files File.join(@dir_config[:path], @dir_config[:product])
     end
 
     def forge
@@ -37,10 +38,10 @@ module StoryForge
     end
 
     def get_stories
-      data = StoryForge::Request.new.do_request 'rm_story', @config[:filter]
-      data['result'].first(@config[:limit]).map do |item|
-        build_story item, @config[:path]
-        archive_story item, @config[:path]
+      data = StoryForge::Request.new.do_request 'rm_story', @story_config[:filter]
+      data['result'].first(@story_config[:limit]).map do |item|
+        build_story item, @dir_config[:path]
+        archive_story item, @dir_config[:path]
       end
     rescue RestClient::ExceptionWithResponse => e
       e.response

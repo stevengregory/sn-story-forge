@@ -3,16 +3,21 @@
 module StoryForge
   class Config
     class << self
-      def story_options
+      def directory_options
         {
           archive: 'Archive',
+          path: '/Users/steven.gregory/Desktop/Story Forge',
+          product: 'Product'
+        }
+      end
+
+      def story_options
+        {
           filter: {
             assigned_to: 'Steven Gregory',
             sysparm_display_value: 'true'
           },
-          limit: 50,
-          path: '/Users/steven.gregory/Desktop/Story Forge',
-          product: 'Product'
+          limit: 50
         }
       end
 
