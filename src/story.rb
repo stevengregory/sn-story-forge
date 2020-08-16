@@ -2,6 +2,7 @@
 
 require 'rest-client'
 require 'yaml'
+
 require_relative 'config'
 require_relative 'request'
 require_relative 'template'
@@ -34,11 +35,11 @@ module StoryForge
 
     def forge
       delete_stories
-      get_stories
+      fetch_stories
     end
 
-    def get_stories
-      data = StoryForge::Request.new.do_request 'rm_story', @story_config[:filter]
+    def fetch_stories
+      data = StoryForge::Request.new.make_request 'rm_story', @story_config[:filter]
       data['result'].first(@story_config[:limit]).map do |item|
         build_story item, @dir_config[:path]
         archive_story item, @dir_config[:path]
@@ -47,8 +48,8 @@ module StoryForge
       e.response
     end
 
-    def get_work_notes(sys_id, config)
-      data = StoryForge::Request.new.do_request 'sys_journal_field', config[:filter]
+    def fetch_work_notes(sys_id, config)
+      data = StoryForge::Request.new.make_request 'sys_journal_field', config[:filter]
       notes = data['result'].sort_by { |key| key['sys_created_on'] }.first(config[:limit]).map do |item|
         "---\n\n#### #{item['sys_created_by']}\n\n#{item['value']}\n\n_#{item['sys_created_on']}_\n\n---"
       end

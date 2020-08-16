@@ -13,7 +13,7 @@ module StoryForge
       @password = ENV['PASSWORD']
     end
 
-    def do_request(table, filter)
+    def make_request(table, filter)
       auth = "Basic #{Base64.strict_encode64("#{@user_name}:#{@password}")}"
       url = "https://#{@instance}.service-now.com/api/now/table/#{table}"
       response = RestClient.get url, params: filter, authorization: auth
