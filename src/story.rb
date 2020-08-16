@@ -10,8 +10,8 @@ require_relative 'util'
 module StoryForge
   class Story
     def initialize
-      @dir_config = StoryForge::Config::directory_options
-      @story_config = StoryForge::Config::story_options
+      @dir_config = StoryForge::Config.directory_options
+      @story_config = StoryForge::Config.story_options
     end
 
     def archive_story(item, story_path)
