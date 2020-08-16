@@ -22,12 +22,12 @@ module StoryForge
       }
     end
 
-    def work_note_options(sysId)
+    def work_note_options(sys_id)
       {
         filter: {
           active: 'true',
           element: 'work_notes',
-          element_id: sysId,
+          element_id: sys_id,
           sysparm_display_value: 'true'
         },
         limit: 20

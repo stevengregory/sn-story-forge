@@ -10,7 +10,7 @@ module StoryForge
     end
 
     def make_directory(path)
-      FileUtils.mkdir_p(path, :verbose => true) unless File.exist?(path)
+      FileUtils.mkdir_p(path, verbose: true) unless File.exist?(path)
     end
 
     def remove_files(path)

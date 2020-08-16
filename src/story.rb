@@ -47,12 +47,12 @@ module StoryForge
       e.response
     end
 
-    def get_work_notes(sysId, config)
+    def get_work_notes(config)
       data = StoryForge::Request.new.do_request 'sys_journal_field', config[:filter]
-      notes = data['result'].sort_by {|key| key['sys_created_on']}.first(config[:limit]).map do |item|
+      notes = data['result'].sort_by { |key| key['sys_created_on'] }.first(config[:limit]).map do |item|
         "---\n\n#### #{item['sys_created_by']}\n\n#{item['value']}\n\n_#{item['sys_created_on']}_\n\n---"
       end
-      notes.join()
+      notes.join
     rescue RestClient::ExceptionWithResponse => e
       e.response
     end
