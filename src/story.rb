@@ -17,7 +17,7 @@ module StoryForge
 
     def archive_story(item, story_path)
       archive_path = "#{story_path}/#{@dir_config[:archive]}/#{item['number']}.yml"
-      StoryForge::Util.new.make_directory File.join(story_path, @dir_config[:archive])
+      StoryForge::Utils.new.make_directory File.join(story_path, @dir_config[:archive])
       File.write(archive_path, item.to_yaml)
     end
 
@@ -25,12 +25,12 @@ module StoryForge
       project = item['assignment_group']['display_value'].to_s
       state_path = item['state'].to_s.capitalize
       file_path = "#{story_path}/#{@dir_config[:product]}/#{project}/#{state_path}/#{item['number']}.md"
-      StoryForge::Util.new.make_directory File.join(story_path, @dir_config[:product], project, state_path)
+      StoryForge::Utils.new.make_directory File.join(story_path, @dir_config[:product], project, state_path)
       File.write(file_path, Template.new.markdown_template(item))
     end
 
     def delete_stories
-      StoryForge::Util.new.remove_files File.join(@dir_config[:path], @dir_config[:product])
+      StoryForge::Utils.new.remove_files File.join(@dir_config[:path], @dir_config[:product])
     end
 
     def forge

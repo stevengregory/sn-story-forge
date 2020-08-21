@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'dotenv/load'
+
 require_relative 'config'
 require_relative 'story'
 require_relative 'utils'
@@ -23,8 +25,12 @@ module StoryForge
       ].join
     end
 
+    def build_host_url
+      "https://#{ENV['INSTANCE']}.service-now.com"
+    end
+
     def get_acceptance_criteria(item)
-      "## ✅ Acceptance Criteria\n\n#{Util.new.convert_to_markdown item, 'acceptance_criteria'}"
+      "## ✅ Acceptance Criteria\n\n#{Utils.new.convert_to_markdown item, 'acceptance_criteria'}"
     end
 
     def get_assigned_to(item)
@@ -42,7 +48,7 @@ module StoryForge
     def get_epic(item)
       if !item['epic'].empty?
         epic_id = item['epic']['link'].chars.last(32).join
-        "## 📁 Epic\n\n[#{item['epic']['display_value']}](#{ENV['HOST']}nav_to.do?uri=rm_epic.do?sys_id=#{epic_id}&sysparm_view=scrum)\n\n"
+        "## 📁 Epic\n\n[#{item['epic']['display_value']}](#{build_host_url}/nav_to.do?uri=rm_epic.do?sys_id=#{epic_id}&sysparm_view=scrum)\n\n"
       end
     end
 
@@ -59,7 +65,7 @@ module StoryForge
     end
 
     def get_story(item)
-      "# [#{item['number']}](#{ENV['HOST']}/nav_to.do?uri=rm_story.do?sys_id=#{item['sys_id']}%26sysparm_view=scrum)\n\n"
+      "# [#{item['number']}](#{build_host_url}/nav_to.do?uri=rm_story.do?sys_id=#{item['sys_id']}%26sysparm_view=scrum)\n\n"
     end
 
     def get_story_info(item)
