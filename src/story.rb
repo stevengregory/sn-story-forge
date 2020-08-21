@@ -6,7 +6,7 @@ require 'yaml'
 require_relative 'config'
 require_relative 'request'
 require_relative 'template'
-require_relative 'util'
+require_relative 'utils'
 
 module StoryForge
   class Story

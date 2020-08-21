@@ -2,7 +2,7 @@
 
 require_relative 'config'
 require_relative 'story'
-require_relative 'util'
+require_relative 'utils'
 
 module StoryForge
   class Template

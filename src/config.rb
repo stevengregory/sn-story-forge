@@ -7,7 +7,7 @@ module StoryForge
     def directory_options
       {
         archive: 'Archive',
-        path: '/Users/steven.gregory/Desktop/Story Forge',
+        path: '/Users/sgregory/Desktop/Story Forge',
         product: 'Product'
       }
     end

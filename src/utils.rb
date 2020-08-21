@@ -4,7 +4,7 @@ require 'fileutils'
 require 'reverse_markdown'
 
 module StoryForge
-  class Util
+  class Utils
     def convert_to_markdown(item, field)
       ReverseMarkdown.convert item[field]
     end
