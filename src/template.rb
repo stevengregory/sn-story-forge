@@ -69,7 +69,7 @@ module StoryForge
     end
 
     def get_story_info(item)
-      "\n\n#### [See All Story Data](./../../Archive/#{item['number']}.yml)\n\n"
+      "\n\n#### [See All Story Data](../../Archive/#{item['number']}.yml)\n\n"
     end
 
     def get_story_points(item)
