@@ -25,7 +25,7 @@ module StoryForge
       ].join
     end
 
-    def build_host_url
+    def build_instance_url
       "https://#{ENV['INSTANCE']}.service-now.com"
     end
 
@@ -48,7 +48,7 @@ module StoryForge
     def get_epic(item)
       if !item['epic'].empty?
         epic_id = item['epic']['link'].chars.last(32).join
-        "## 📁 Epic\n\n[#{item['epic']['display_value']}](#{build_host_url}/nav_to.do?uri=rm_epic.do?sys_id=#{epic_id}&sysparm_view=scrum)\n\n"
+        "## 📁 Epic\n\n[#{item['epic']['display_value']}](#{build_instance_url}/nav_to.do?uri=rm_epic.do?sys_id=#{epic_id}&sysparm_view=scrum)\n\n"
       end
     end
 
@@ -65,7 +65,7 @@ module StoryForge
     end
 
     def get_story(item)
-      "# [#{item['number']}](#{build_host_url}/nav_to.do?uri=rm_story.do?sys_id=#{item['sys_id']}%26sysparm_view=scrum)\n\n"
+      "# [#{item['number']}](#{build_instance_url}/nav_to.do?uri=rm_story.do?sys_id=#{item['sys_id']}%26sysparm_view=scrum)\n\n"
     end
 
     def get_story_info(item)
