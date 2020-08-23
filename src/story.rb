@@ -22,7 +22,8 @@ module StoryForge
     end
 
     def build_story(item, story_path)
-      project = item['assignment_group']['display_value'].to_s
+      assignment_group = item['assignment_group']['display_value']
+      project = assignment_group ? assignment_group.to_s : @dir_config[:default]
       state_path = item['state'].to_s.capitalize
       file_path = "#{story_path}/#{@dir_config[:product]}/#{project}/#{state_path}/#{item['number']}.md"
       StoryForge::Utils.new.make_directory File.join(story_path, @dir_config[:product], project, state_path)
