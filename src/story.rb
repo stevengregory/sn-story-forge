@@ -22,8 +22,8 @@ module StoryForge
     end
 
     def build_story(item, story_path)
-      assignment_group = item['assignment_group']['display_value']
-      project = assignment_group ? assignment_group.to_s : @dir_config[:default]
+      product = item['product']['display_value']
+      project = product ? product.to_s : @dir_config[:default]
       state_path = item['state'].to_s.capitalize
       file_path = "#{story_path}/#{@dir_config[:product]}/#{project}/#{state_path}/#{item['number']}.md"
       StoryForge::Utils.new.make_directory File.join(story_path, @dir_config[:product], project, state_path)
@@ -31,7 +31,7 @@ module StoryForge
     end
 
     def delete_stories
-      StoryForge::Utils.new.remove_files File.join(@dir_config[:path], @dir_config[:product])
+      StoryForge::Utils.new.remove_files File.join(@dir_config[:path], @dir_config[:product], @story_config[:filter][:product])
     end
 
     def forge
