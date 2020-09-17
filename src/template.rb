@@ -34,7 +34,7 @@ module StoryForge
     end
 
     def get_assigned_to(item)
-      "## 😀 Assigned To\n\n#{item['assigned_to']['display_value']}\n\n"
+      "## 😀 Assigned To\n\n#{item['assigned_to']['display_value']}\n\n" if !item['assigned_to'].empty?
     end
 
     def get_created_by(item)
