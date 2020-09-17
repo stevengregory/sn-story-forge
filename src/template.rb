@@ -15,6 +15,7 @@ module StoryForge
         get_description(item),
         get_acceptance_criteria(item),
         get_epic(item),
+        get_sprint(item),
         get_assigned_to(item),
         get_story_points(item),
         get_state(item),
@@ -50,6 +51,10 @@ module StoryForge
         epic_id = item['epic']['link'].chars.last(32).join
         "## 📁 Epic\n\n[#{item['epic']['display_value']}](#{build_instance_url}/nav_to.do?uri=rm_epic.do?sys_id=#{epic_id}&sysparm_view=scrum)\n\n"
       end
+    end
+
+    def get_sprint(item)
+      "## 🎯 Sprint\n\n#{item['sprint']}\n\n" if !item['sprint'].empty?
     end
 
     def get_last_updated(item)
