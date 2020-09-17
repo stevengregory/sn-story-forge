@@ -54,7 +54,7 @@ module StoryForge
     end
 
     def get_sprint(item)
-      "## 🎯 Sprint\n\n#{item['sprint']}\n\n" if !item['sprint'].empty?
+      "## 🎯 Sprint\n\n#{item['sprint']['display_value']}\n\n" if !item['sprint'].empty?
     end
 
     def get_last_updated(item)
