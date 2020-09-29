@@ -54,7 +54,10 @@ module StoryForge
     end
 
     def get_sprint(item)
-      "## 🎯 Sprint\n\n#{item['sprint']['display_value']}\n\n" if !item['sprint'].empty?
+      if !item['sprint'].empty?
+        sprint_id = item['sprint']['link'].chars.last(32).join
+        "## 🎯 Sprint\n\n[#{item['sprint']['display_value']}](#{build_instance_url}/nav_to.do?uri=rm_sprint.do?sys_id=#{sprint_id}&sysparm_view=scrum)\n\n"
+      end
     end
 
     def get_last_updated(item)
