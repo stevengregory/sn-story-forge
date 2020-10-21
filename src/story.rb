@@ -51,10 +51,12 @@ module StoryForge
 
     def fetch_work_notes(sys_id, config)
       data = StoryForge::Request.new.make_request 'sys_journal_field', config[:filter]
-      notes = data['result'].sort_by { |key| key['sys_created_on'] }.first(config[:limit]).map do |item|
-        "---\n\n#### #{item['sys_created_by']}\n\n#{item['value']}\n\n_#{item['sys_created_on']}_\n\n---"
+      if data['result'][0] && data['result'][0].count > 1
+        notes = data['result'].sort_by { |key| key['sys_created_on'] }.first(config[:limit]).map do |item|
+          "---\n\n#### #{item['sys_created_by']}\n\n#{item['value']}\n\n_#{item['sys_created_on']}_\n\n---"
+        end
+        notes.join
       end
-      notes.join
     rescue RestClient::ExceptionWithResponse => e
       e.response
     end
