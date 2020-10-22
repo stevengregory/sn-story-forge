@@ -31,7 +31,7 @@ module StoryForge
     end
 
     def get_acceptance_criteria(item)
-      "## ✅ Acceptance Criteria\n\n#{Utils.new.convert_to_markdown item, 'acceptance_criteria'}"
+      "## ✅ Acceptance Criteria\n\n#{Utils.new.convert_to_markdown item, 'acceptance_criteria'}" if !item['acceptance_criteria'].empty?
     end
 
     def get_assigned_to(item)
