@@ -36,7 +36,7 @@ module StoryForge
     end
 
     def get_assigned_to(item)
-      "## 😀 Assigned To\n\n#{item['assigned_to']['display_value']}\n\n" if !item['assigned_to'].empty?
+      "## 🎯 Assigned To\n\n#{item['assigned_to']['display_value']}\n\n" if !item['assigned_to'].empty?
     end
 
     def get_created_by(item)
@@ -57,7 +57,7 @@ module StoryForge
     def get_sprint(item)
       if !item['sprint'].empty?
         sprint_id = item['sprint']['link'].chars.last(32).join
-        "## 🎯 Sprint\n\n[#{item['sprint']['display_value']}](#{build_instance_url}/nav_to.do?uri=rm_sprint.do?sys_id=#{sprint_id}&sysparm_view=scrum)\n\n"
+        "## 👟 Sprint\n\n[#{item['sprint']['display_value']}](#{build_instance_url}/nav_to.do?uri=rm_sprint.do?sys_id=#{sprint_id}&sysparm_view=scrum)\n\n"
       end
     end
 
@@ -88,7 +88,7 @@ module StoryForge
     def get_work_notes(item)
       config = StoryForge::Config.work_note_options(item['sys_id'])
       work_notes = StoryForge::Story.new.fetch_work_notes item['sys_id'], config
-      "## 📝 Work Notes\n\n#{work_notes}" if !work_notes.to_s.empty?
+      "## 💬 Work Notes\n\n#{work_notes}" if !work_notes.to_s.empty?
     end
   end
 end
