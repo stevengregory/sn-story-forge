@@ -26,10 +26,6 @@ module StoryForge
       ].join
     end
 
-    def build_instance_url
-      "https://#{ENV['INSTANCE']}.service-now.com"
-    end
-
     def get_acceptance_criteria(item)
       ac = Utils.new.convert_to_markdown item, 'acceptance_criteria'
       "## ✅ Acceptance Criteria\n\n#{ac}" if !ac.empty?
@@ -50,14 +46,14 @@ module StoryForge
     def get_epic(item)
       if !item['epic'].empty?
         epic_id = item['epic']['link'].chars.last(32).join
-        "## 📁 Epic\n\n[#{item['epic']['display_value']}](#{build_instance_url}/nav_to.do?uri=rm_epic.do?sys_id=#{epic_id}&sysparm_view=scrum)\n\n"
+        "## 📁 Epic\n\n[#{item['epic']['display_value']}](#{Utils.new.build_instance_url ENV['INSTANCE']}/nav_to.do?uri=rm_epic.do?sys_id=#{epic_id}&sysparm_view=scrum)\n\n"
       end
     end
 
     def get_sprint(item)
       if !item['sprint'].empty?
         sprint_id = item['sprint']['link'].chars.last(32).join
-        "## 👟 Sprint\n\n[#{item['sprint']['display_value']}](#{build_instance_url}/nav_to.do?uri=rm_sprint.do?sys_id=#{sprint_id}&sysparm_view=scrum)\n\n"
+        "## 👟 Sprint\n\n[#{item['sprint']['display_value']}](#{Utils.new.build_instance_url ENV['INSTANCE']}/nav_to.do?uri=rm_sprint.do?sys_id=#{sprint_id}&sysparm_view=scrum)\n\n"
       end
     end
 
@@ -74,7 +70,7 @@ module StoryForge
     end
 
     def get_story(item)
-      "# [#{item['number']}](#{build_instance_url}/nav_to.do?uri=rm_story.do?sys_id=#{item['sys_id']}%26sysparm_view=scrum)\n\n"
+      "# [#{item['number']}](#{Utils.new.build_instance_url ENV['INSTANCE']}/nav_to.do?uri=rm_story.do?sys_id=#{item['sys_id']}%26sysparm_view=scrum)\n\n"
     end
 
     def get_story_info(item)

@@ -5,6 +5,10 @@ require 'reverse_markdown'
 
 module StoryForge
   class Utils
+    def build_instance_url(instance)
+      "https://#{instance}.service-now.com"
+    end
+
     def convert_to_markdown(item, field)
       ReverseMarkdown.convert item[field]
     end
