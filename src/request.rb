@@ -5,6 +5,8 @@ require 'dotenv/load'
 require 'json'
 require 'rest-client'
 
+require_relative 'utils'
+
 module StoryForge
   class Request
     def initialize
@@ -15,7 +17,7 @@ module StoryForge
 
     def make_request(table, filter)
       auth = "Basic #{Base64.strict_encode64("#{@user_name}:#{@password}")}"
-      url = "https://#{@instance}.service-now.com/api/now/table/#{table}"
+      url = "#{Utils.new.build_instance_url @instance}/api/now/table/#{table}"
       response = RestClient.get url, params: filter, authorization: auth
       JSON.parse(response.body)
     end
