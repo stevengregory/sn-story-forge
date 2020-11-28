@@ -40,7 +40,7 @@ module StoryForge
     end
 
     def fetch_stories
-      data = StoryForge::Request.new.make_request 'rm_story', @story_config[:filter]
+      data = StoryForge::Request.new.fetch 'rm_story', @story_config[:filter]
       data['result'].first(@story_config[:limit]).map do |item|
         build_story item, @dir_config[:path]
         archive_story item, @dir_config[:path]
@@ -50,7 +50,7 @@ module StoryForge
     end
 
     def fetch_work_notes(sys_id, config)
-      data = StoryForge::Request.new.make_request 'sys_journal_field', config[:filter]
+      data = StoryForge::Request.new.fetch 'sys_journal_field', config[:filter]
       if data['result'][0] && data['result'][0].count > 1
         notes = data['result'].sort_by { |key| key['sys_created_on'] }.first(config[:limit]).map do |item|
           "---\n\n#### #{item['sys_created_by']}\n\n#{item['value']}\n\n_#{item['sys_created_on']}_\n\n---"
