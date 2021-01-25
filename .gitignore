@@ -3,3 +3,4 @@
 .env
 Gemfile.lock
 tmp
+dist

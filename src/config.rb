@@ -8,7 +8,7 @@ module StoryForge
       {
         archive: 'Archive',
         default: 'All',
-        path: '/Users/steven.gregory/Desktop/Story Forge',
+        path: 'dist',
         product: 'Product'
       }
     end

@@ -31,7 +31,7 @@ module StoryForge
     end
 
     def delete_stories
-      StoryForge::Utils.new.remove_files File.join(@dir_config[:path], @dir_config[:product], @story_config[:filter][:product])
+      StoryForge::Utils.new.remove_files File.join(@dir_config[:path], @dir_config[:product])
     end
 
     def forge
