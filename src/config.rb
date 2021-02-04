@@ -8,6 +8,7 @@ module StoryForge
       {
         archive: 'Archive',
         default: 'All',
+        my_stories: 'My Stories',
         path: 'dist',
         product: 'Product'
       }
@@ -16,10 +17,16 @@ module StoryForge
     def story_options
       {
         filter: {
-          assigned_to: 'Steven Gregory',
+          epic: 'CloudLabs Integration 2.0',
           sysparm_display_value: 'true'
         },
-        limit: 50
+        limit: 25
+      }
+    end
+
+    def user_options
+      {
+        name: 'Steven Gregory'
       }
     end
 

@@ -13,12 +13,19 @@ module StoryForge
     def initialize
       @dir_config = StoryForge::Config.directory_options
       @story_config = StoryForge::Config.story_options
+      @user_config = StoryForge::Config.user_options
     end
 
     def archive_story(item, story_path)
       archive_path = "#{story_path}/#{@dir_config[:archive]}/#{item['number']}.yml"
       StoryForge::Utils.new.make_directory File.join(story_path, @dir_config[:archive])
       File.write(archive_path, item.to_yaml)
+    end
+
+    def build_my_stories(item, story_path)
+      file_path = "#{story_path}/#{@dir_config[:my_stories]}/#{item['number']}.md"
+      StoryForge::Utils.new.make_directory File.join(story_path, @dir_config[:my_stories])
+      File.write(file_path, Template.new.markdown_template(item))
     end
 
     def build_story(item, story_path)
@@ -31,6 +38,7 @@ module StoryForge
     end
 
     def delete_stories
+      StoryForge::Utils.new.remove_files File.join(@dir_config[:path], @dir_config[:my_stories])
       StoryForge::Utils.new.remove_files File.join(@dir_config[:path], @dir_config[:product])
     end
 
@@ -43,6 +51,7 @@ module StoryForge
       data = StoryForge::Request.new.fetch 'rm_story', @story_config[:filter]
       data['result'].first(@story_config[:limit]).map do |item|
         build_story item, @dir_config[:path]
+        build_my_stories item, @dir_config[:path] if item['assigned_to']['display_value'] == @user_config[:name]
         archive_story item, @dir_config[:path]
       end
     rescue RestClient::ExceptionWithResponse => e
