@@ -17,7 +17,7 @@ module StoryForge
     def story_options
       {
         filter: {
-          epic: 'CloudLabs Integration 2.0',
+          epic: 'My Epic',
           sysparm_display_value: 'true'
         },
         limit: 25
