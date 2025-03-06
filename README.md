@@ -30,5 +30,6 @@ bundle install
 │   ├── template.rb     # Markdown template generation
 │   └── utils.rb        # Utility functions
 ├── Gemfile             # Ruby dependencies
-└── .env                # Environment configuration
+├── .env                # Environment configuration (create from .env.example)
+└── .env.example        # Example environment configuration
 ```
