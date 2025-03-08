@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'dotenv'
+
 module StoryForge
   module Config
     module_function
@@ -17,16 +19,16 @@ module StoryForge
     def story_options
       {
         filter: {
-          epic: 'My Epic',
+          epic: ENV['EPIC'] || 'My Epic',
           sysparm_display_value: 'true'
         },
-        limit: 25
+        limit: (ENV['STORY_LIMIT'] || 25).to_i
       }
     end
 
     def user_options
       {
-        name: 'Steven Gregory'
+        name: ENV['USER_NAME'] || 'Abel Tuter'
       }
     end
 
@@ -38,7 +40,7 @@ module StoryForge
           element_id: sys_id,
           sysparm_display_value: 'true'
         },
-        limit: 20
+        limit: (ENV['WORK_NOTES_LIMIT'] || 20).to_i
       }
     end
   end
