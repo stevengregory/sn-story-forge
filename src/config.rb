@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dotenv'
+require 'dotenv/load'
 
 module StoryForge
   module Config
