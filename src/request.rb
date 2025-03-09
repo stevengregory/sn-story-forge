@@ -11,12 +11,12 @@ module StoryForge
   class Request
     def initialize
       @instance = ENV['INSTANCE']
-      @user_name = ENV['USERNAME']
+      @user_id = ENV['USER_ID']
       @password = ENV['PASSWORD']
     end
 
     def fetch(table, filter)
-      auth = "Basic #{Base64.strict_encode64("#{@user_name}:#{@password}")}"
+      auth = "Basic #{Base64.strict_encode64("#{@user_id}:#{@password}")}"
       url = "#{Utils.new.build_instance_url @instance}/api/now/table/#{table}"
       response = RestClient.get url, params: filter, authorization: auth
       JSON.parse(response.body)
