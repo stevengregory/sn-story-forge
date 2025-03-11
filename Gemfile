@@ -2,10 +2,11 @@
 
 source 'https://rubygems.org'
 
-git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
+gem 'dotenv', '~> 3.1'
+gem 'json', '~> 2.10'
+gem 'rest-client', '~> 2.1'
+gem 'reverse_markdown', '~> 3.0'
 
-gem 'dotenv'
-gem 'json'
-gem 'rest-client'
-gem 'reverse_markdown'
-gem 'rubocop', require: false
+group :development do
+  gem 'rubocop', '~> 1.73', require: false
+end
