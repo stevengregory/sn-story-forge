@@ -13,6 +13,12 @@ An experimental Ruby tool that generates local Markdown files from ServiceNow us
 bundle install
 ```
 
+## Configuration
+
+```bash
+cp .env.example .env
+```
+
 ## Running
 
 ```bash
