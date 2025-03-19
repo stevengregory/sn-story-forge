@@ -1,0 +1,10 @@
+services:
+  story-forge:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: story-forge
+    volumes:
+      - ./.env:/app/.env
+      - ./dist:/app/dist
+    restart: no
